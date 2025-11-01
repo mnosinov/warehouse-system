@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 from app.database.database import get_db
 from app.models import User
 from app.schemas import UserCreate, UserResponse
@@ -15,7 +16,7 @@ async def create_user(
 ):
     # Проверяем, существует ли пользователь
     result = await db.execute(
-        "SELECT id FROM users WHERE username = :username",
+        text("SELECT id FROM users WHERE username = :username"),
         {"username": user_data.username}
     )
     existing_user = result.fetchone()
