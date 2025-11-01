@@ -151,3 +151,4 @@ tags
 # some local scripts that are neccessary during development
 enable_venv.sh
 /.project
+alembic.ini
