@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text
+from sqlalchemy import select
 from app.database.database import get_db
-from app.models import User
-from app.schemas import UserCreate, UserResponse
+from app.models.user import User
+from app.schemas.user import UserCreate, UserResponse
 from app.core.security import get_password_hash
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -14,12 +14,11 @@ async def create_user(
         user_data: UserCreate,
         db: AsyncSession = Depends(get_db)
 ):
-    # Проверяем, существует ли пользователь
+    # Проверяем, существует ли пользователь с использованием SQLAlchemy ORM
     result = await db.execute(
-        text("SELECT id FROM users WHERE username = :username"),
-        {"username": user_data.username}
+        select(User).where(User.username == user_data.username)
     )
-    existing_user = result.fetchone()
+    existing_user = result.scalar_one_or_none()
 
     if existing_user:
         raise HTTPException(
