@@ -16,7 +16,6 @@ async def login(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: AsyncSession = Depends(get_db)
 ):
-    print('01')
     # Ищем пользователя
     result = await db.execute(
         text("SELECT * FROM users WHERE username = :username"),
