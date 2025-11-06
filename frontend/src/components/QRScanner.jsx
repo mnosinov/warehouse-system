@@ -30,7 +30,6 @@ const QRScanner = ({ onScan }) => {
           height: 250,
         },
         fps: 2, // Уменьшаем FPS для производительности
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_QR_CODE],
       },
       false,
     );
@@ -47,7 +46,7 @@ const QRScanner = ({ onScan }) => {
       (error) => {
         if (!isComponentMounted) return;
         // Игнорируем обычные ошибки "не найден QR-код"
-        if (!error.message.includes("NotFoundException")) {
+        if (!error?.message?.includes("NotFoundException")) {
           console.log("QR Scan error:", error);
         }
       },

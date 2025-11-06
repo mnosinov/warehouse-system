@@ -14,13 +14,33 @@ const Dashboard = () => {
     setError("");
 
     try {
-      // Пока просто ищем продукт по ID (в будущем можно добавить поиск по QR)
-      // Для демо используем последнюю часть QR кода как ID
-      const productId = qrCode.split(":").pop();
-      const response = await productsAPI.getProduct(productId);
-      setScannedProduct(response.data);
+      console.log("Trying to scan QR:", qrCode);
+
+      // Если QR-код содержит product:ID, извлекаем ID
+      let productId = qrCode;
+      if (qrCode.startsWith("product:")) {
+        productId = qrCode.split(":")[1];
+      }
+
+      // Пробуем найти продукт по ID
+      try {
+        const response = await productsAPI.getProduct(productId);
+        setScannedProduct(response.data);
+        setError("");
+      } catch (idError) {
+        // Если не нашли по ID, пробуем найти по QR-коду напрямую
+        try {
+          const response = await productsAPI.getProductByQR(qrCode);
+          setScannedProduct(response.data);
+          setError("");
+        } catch (qrError) {
+          setError("Продукт не найден. Проверьте QR-код.");
+          setScannedProduct(null);
+        }
+      }
     } catch (err) {
-      setError("Продукт не найден. Убедитесь, что QR-код правильный.");
+      console.error("Scan error:", err);
+      setError("Ошибка при сканировании. Попробуйте еще раз.");
       setScannedProduct(null);
     } finally {
       setLoading(false);
@@ -60,18 +80,29 @@ const Dashboard = () => {
       </div>
 
       <div className="scanner-section">
-        <h2>Сканирование QR-кода товара</h2>
         <QRScanner onScan={handleScan} />
 
         {loading && (
-          <p style={{ textAlign: "center", margin: "1rem 0" }}>Загрузка...</p>
+          <p style={{ textAlign: "center", margin: "1rem 0" }}>
+            Поиск товара...
+          </p>
         )}
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div
+            className="error"
+            style={{ textAlign: "center", margin: "1rem 0" }}
+          >
+            {error}
+          </div>
+        )}
       </div>
 
       {scannedProduct && (
         <div className="product-info">
           <h3>Информация о товаре:</h3>
+          <p>
+            <strong>ID:</strong> {scannedProduct.id}
+          </p>
           <p>
             <strong>Название:</strong> {scannedProduct.name}
           </p>
