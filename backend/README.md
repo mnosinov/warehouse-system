@@ -1,3 +1,13 @@
+# Основные моменты
+- Асинхронные запросы с asyncpg
+- JWT аутентификация с ролями
+- SQLAdmin панель
+- Pydantic схемы для валидации
+- CORS настроен через .env
+- HTTPS с самоподписанными сертификатами
+- Ролевая модель (admin/operator)
+- Хэширование паролей
+
 # Бэкенд (FastAPI + PostgreSQL)
 ```text
 backend/
@@ -10,7 +20,9 @@ backend/
 │   └── admin/           # SQLAdmin панель
 ```
 
-# Типичный workflow работы с миграциями:
+
+
+# БАЗА ДАННЫХ
 ## Типичный workflow работы с миграциями:
 ```bash
 # 1. Создание новой миграции (после изменения моделей)
@@ -139,3 +151,31 @@ alembic upgrade head
 - Изменяете модели -> Создаете миграцию -> Применяете миграцию
 - Коммитите миграции в репозиторий
 - Коллеги применяют миграции после git pull
+
+## Быстрый старт
+
+### Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --ssl-keyfile ssl/key.pem --ssl-certfile ssl/cert.pem
+```
+### SSL Certificates
+```bash
+mkdir -p backend/ssl
+openssl req -x509 -newkey rsa:4096 -nodes -out backend/ssl/cert.pem -keyout backend/ssl/key.pem -days 365\n
+```
+
+## .env файл - в корне backend
+```
+DATABASE_URL=postgresql+asyncpg://warehouse:warehouse123@localhost/warehouse_db
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+DEBUG=False
+CORS_ORIGINS=http://localhost:3000, http://128.0.0.1:3000, 192.168.1.100:3000,https://localhost:3000,https://192.168.1.100:3000
+DB_ECHO=True
+```
