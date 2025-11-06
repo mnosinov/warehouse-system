@@ -153,3 +153,9 @@ tags
 enable_venv.sh
 /.project
 alembic.ini
+.zed
+
+# js related files and folders
+node_modules
+.env.local
+.env.development.local
