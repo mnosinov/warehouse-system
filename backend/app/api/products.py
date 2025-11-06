@@ -68,3 +68,21 @@ async def get_product(
             detail="Product not found"
         )
     return product
+
+
+@router.get("/qr/{qr_code}", response_model=ProductResponse)
+async def get_product_by_qr(
+        qr_code: str,
+        db: AsyncSession = Depends(get_db),
+        current_user: dict = Depends(require_operator)
+):
+    result = await db.execute(select(Product).where(Product.qr_code == qr_code))
+    product = result.scalar_one_or_none()
+
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+
+    return product

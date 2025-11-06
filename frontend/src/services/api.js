@@ -38,6 +38,6 @@ export const authAPI = {
 export const productsAPI = {
   getProducts: () => api.get("/products/"),
   getProduct: (id) => api.get(`/products/${id}`),
-  createProduct: (data) => api.post("/products/", data),
-  searchByQR: (qrCode) => api.get(`/products/qr/${qrCode}`),
+  getProductByQR: (qrCode) => api.get(`/products/qr/${qrCode}`),
+  createProduct: (data) => api.post('/products/', data),
 };
