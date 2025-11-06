@@ -21,4 +21,13 @@ export default defineConfig({
     // Указываем базовый путь для ресурсов. Если приложение развернуто в корне, то оставляем '/'
     base: "/",
   },
+  build: {
+    // Убеждаемся, что пути к ресурсам относительные
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    }
+  }
 });
