@@ -169,6 +169,7 @@ mkdir -p backend/ssl
 openssl req -x509 -newkey rsa:4096 -nodes -out backend/ssl/cert.pem -keyout backend/ssl/key.pem -days 365\n
 ```
 
+
 ## .env файл - в корне backend
 ```
 DATABASE_URL=postgresql+asyncpg://warehouse:warehouse123@localhost/warehouse_db
