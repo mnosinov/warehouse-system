@@ -79,7 +79,7 @@ alembic revision --autogenerate -m "Add category to products"
 ### 3. Миграции данных
 ```python
 # Иногда нужно не только изменить схему, но и данные
-# alembic/versions/002_add_default_categories.py
+# alembicmigrations/versions/002_add_default_categories.py
 
 def upgrade():
     # Добавляем колонку
@@ -102,7 +102,7 @@ alembic upgrade head
 
 # После внесения изменений в модели
 alembic revision --autogenerate -m "Your changes"
-git add alembic/versions/
+git add alembicmigrations/versions/
 git commit -m "Add database migration"
 ```
 ### 5. Production deployment
@@ -134,7 +134,7 @@ alembic revision --autogenerate -m "update"
 ### 3. Проверка миграций:
 ```bash
 # Всегда проверяйте сгенерированную миграцию
-cat alembic/versions/xxx_add_new_table.py
+cat alembicmigrations/versions/xxx_add_new_table.py
 
 # Тестируйте откат
 alembic downgrade -1

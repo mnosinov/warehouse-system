@@ -1,4 +1,4 @@
-from alembic import op
+from alembicmigrations import op
 import sqlalchemy as sa
 
 revision = '001_initial'

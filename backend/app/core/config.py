@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,11 +18,9 @@ class Settings:
     if DEBUG:
         allow_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
     else:
-        allow_origins = None
+        allow_origins: list[str] = []
 
-    CORS_ORIGINS: list[str] = os.getenv(
-        "CORS_ORIGINS", allow_origins or "http://localhost:3000"
-    ).split(",")
+    CORS_ORIGINS: list[str] = os.getenv("CORS_ORIGINS", "").split(",") or allow_origins
 
     # Настройки базы данных для разработки
     DB_ECHO: bool = (
