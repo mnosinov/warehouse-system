@@ -15,10 +15,8 @@ class Settings:
 
     # Debug и настройки разработки
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
-    if DEBUG:
-        allow_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
-    else:
-        allow_origins: list[str] = []
+
+    allow_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"] if DEBUG else []
 
     CORS_ORIGINS: list[str] = os.getenv("CORS_ORIGINS", "").split(",") or allow_origins
 

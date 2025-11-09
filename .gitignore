@@ -160,3 +160,5 @@ node_modules
 .env.local
 .env.development.local
 ssl
+backend/pyrightconfig.json
+backend/.github/copilot-instructions.md
